@@ -174,8 +174,7 @@ export function writeDuplicates(rootVal: unknown, parts: string[], known: Known,
   const seen = new Map<unknown, number>()
   walk(rootVal, seen)
 
-  const repeats = seen
-    .entries()
+  const repeats = [...seen.entries()]
     // Filter to only repeated values
     .filter(removeSingletons)
 
