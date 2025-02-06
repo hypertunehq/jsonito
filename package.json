@@ -1,25 +1,45 @@
 {
-  "name": "jsonito",
+  "name": "@hypertune/jsonito",
   "repository": {
     "type": "git",
-    "url": "https://github.com/creationix/jsonito"
+    "url": "https://github.com/hypertunehq/jsonito"
   },
-  "version": "0.1.2",
+  "version": "0.0.3",
   "description": "El sobrinito de JSON",
-  "main": "dist/jsonito.js",
-  "types": "dist/jsonito.d.ts",
-  "type": "module",
   "files": [
     "dist/*",
     "README.md"
   ],
+  "main": "./dist/cjs/jsonito.js",
+  "module": "./dist/esm/jsonito.js",
+  "types": "./dist/types/jsonito.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/jsonito.d.ts",
+      "require": "./dist/cjs/jsonito.js",
+      "import": "./dist/esm/jsonito.js",
+      "default": "./dist/esm/jsonito.js"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "require": "./dist/cjs/*.js",
+      "import": "./dist/esm/*.js",
+      "default": "./dist/esm/*.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "prepublish": "tsc && biome format --fix dist && biome lint --fix dist",
     "format": "biome format --fix src && biome lint --fix src",
     "lint": "biome lint src",
-    "test": "bun test"
+    "test": "bun test",
+    "compile": "tsc -b tsconfig.cjs.json tsconfig.esm.json tsconfig.types.json",
+    "build:clean": "rm -rf ./build",
+    "build": "npm run build:clean && npm run compile && node ./scripts/prepare-package-json.js",
+    "deploy:test": "npm publish --dry-run",
+    "deploy:alpha": "npm publish --tag alpha",
+    "deploy:prod": "npm publish"
   },
-  "author": "Tim Caswell <tim@creationix.com>",
+  "author": "Michal Bock <michal@hypertune.com>",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
